@@ -297,6 +297,7 @@ export default {
                                     }
                                     this.abrirPopUpErro(err, 'Tivemos um problema ao tentar excluir  a empresa.')
                                 });
+                                
 
                     
                 }).catch(() => {});
