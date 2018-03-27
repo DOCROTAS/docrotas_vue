@@ -1,14 +1,17 @@
 <template>
     <el-dialog title="Inserir certificado" :visible.sync="exibe" size="large">
-        <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="http://localhost:8180/certificado/teste"
-            :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">select file</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">upload to server</el-button>
-            <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 500kb</div>
-        </el-upload>
+        <div id="formulario" v-show="modoUpload">
+            <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="http://localhost:8180/certificado"
+                :data="data"
+                :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary">Encontrar o arquivo</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">Upload para o servidor</el-button>
+                <div class="el-upload__tip" slot="tip"></div>
+            </el-upload>
+        </div>
     </el-dialog>
 </template>
 <script>
@@ -23,12 +26,15 @@
                 currentExibe: this.exibe,
                 isSaving : false,
                 isInitial : true,
-                uploadFieldName : ''
+                modoUpload : true,
+                uploadFieldName : '',
+                data : {senha : '123456'}
             }
         },
         methods : {
             submitUpload() {
                 this.$refs.upload.submit();
+                this.modoUpload = false;
             }
         },
         props: {
