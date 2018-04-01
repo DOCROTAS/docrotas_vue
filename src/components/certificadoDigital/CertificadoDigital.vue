@@ -32,12 +32,21 @@
                 <el-table-column prop="dtVencimentoFormatada" label="Vencimento"></el-table-column>
                 <el-table-column>
                     <template scope="scope">
-                        <drt-button-info :somenteIcone="true" v-on:click="editar(scope.row.id)"></drt-button-info>
+                        <!--<drt-button-info :somenteIcone="true" v-on:click="editar(scope.row.id)"></drt-button-info>-->
                         <drt-button-excluir :somenteIcone="true" v-on:click="excluir(scope.row.id, scope.row.nomeArquivo)"></drt-button-excluir>
                     </template>
                 </el-table-column>
             </el-table>
-            <drt-dialog-input-certificado :exibe.sync="exibeDialogInputCertificado"></drt-dialog-input-certificado>
+            <div class="block">
+                <el-pagination
+                    layout="prev, pager, next"
+                    :total="qtdRegistrosLocalizados"
+                    :page-size="qtdRegistros"
+                    :current-page.sync="paginaAtual"
+                    @current-change="buscar">
+                </el-pagination>
+            </div>
+            <drt-dialog-input-certificado :exibe.sync="exibeDialogInputCertificado" v-on:fecharDialogInputCertificado="fecharDialogInputCertificado"></drt-dialog-input-certificado>
         </div>  
     </div>
 </template>

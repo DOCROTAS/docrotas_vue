@@ -6,9 +6,18 @@
                 ref="upload"
                 action="http://localhost:8180/certificado"
                 :data="data"
-                :auto-upload="false">
+                :auto-upload="false"
+                :on-success="sucesso"
+                :on-error="erro">
                 <el-button slot="trigger" size="small" type="primary">Encontrar o arquivo</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">Upload para o servidor</el-button>
+                <el-form ref="form" label-width="180px">
+                    <el-form-item label="Senha">
+                        <el-col :span="4">
+                            <el-input v-model="data.senha"></el-input>
+                        </el-col>
+                    </el-form-item>
+                </el-form>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">Salvar</el-button>
                 <div class="el-upload__tip" slot="tip"></div>
             </el-upload>
         </div>
@@ -28,13 +37,21 @@
                 isInitial : true,
                 modoUpload : true,
                 uploadFieldName : '',
-                data : {senha : '123456'}
+                data : {senha : ''},
             }
         },
         methods : {
             submitUpload() {
-                this.$refs.upload.submit();
-                this.modoUpload = false;
+                this.$refs.upload.submit()
+            },
+            sucesso(v) {
+                this.$emit('fecharDialogInputCertificado');
+            },
+            erro(v) {
+                this.$alert(v.message, 'OPS!', {
+                    confirmButtonText: 'OK',
+                    type: 'error'
+                });
             }
         },
         props: {
