@@ -4,7 +4,7 @@
         <div v-loading.body="loadingTable" element-loading-text="Carregando...">
             <el-form :inline="true">
                 <el-form-item>
-                    <drt-button-novo v-on:click="novo()"></drt-button-novo>
+                    <drt-button-novo v-on:click="exibirDialogInputCertificao()"></drt-button-novo>
                 </el-form-item>
                 <el-form-item>
                     <el-input-number size="small" v-model="qtdRegistros"></el-input-number>
@@ -32,11 +32,21 @@
                 <el-table-column prop="dtVencimentoFormatada" label="Vencimento"></el-table-column>
                 <el-table-column>
                     <template scope="scope">
-                        <drt-button-info :somenteIcone="true" v-on:click="editar(scope.row.id)"></drt-button-info>
+                        <!--<drt-button-info :somenteIcone="true" v-on:click="editar(scope.row.id)"></drt-button-info>-->
                         <drt-button-excluir :somenteIcone="true" v-on:click="excluir(scope.row.id, scope.row.nomeArquivo)"></drt-button-excluir>
                     </template>
                 </el-table-column>
             </el-table>
+            <div class="block">
+                <el-pagination
+                    layout="prev, pager, next"
+                    :total="qtdRegistrosLocalizados"
+                    :page-size="qtdRegistros"
+                    :current-page.sync="paginaAtual"
+                    @current-change="buscar">
+                </el-pagination>
+            </div>
+            <drt-dialog-input-certificado :exibe.sync="exibeDialogInputCertificado" v-on:fecharDialogInputCertificado="fecharDialogInputCertificado"></drt-dialog-input-certificado>
         </div>  
     </div>
 </template>
@@ -48,6 +58,7 @@ import DrtButtonModoGrade from '../shared/btn-modo-grade/btn-modo-grade.vue'
 import DrtButtonNovo from '../shared/btn-novo/btn-novo.vue'
 import DrtButtonPesquisar from '../shared/btn-pesquisar/btn-pesquisar.vue'
 import DrtButtonSalvar from '../shared/btn-salvar/btn-salvar.vue'
+import DrtDialogInputCertificado from '../shared/dialog-input-certificado/dialog-input-certificado.vue'
 
 export default {
     components: {
@@ -56,7 +67,8 @@ export default {
         'drt-button-modo-grade' : DrtButtonModoGrade,
         'drt-button-novo' : DrtButtonNovo,
         'drt-button-pesquisar' : DrtButtonPesquisar,
-        'drt-button-salvar' : DrtButtonSalvar
+        'drt-button-salvar' : DrtButtonSalvar,
+        'drt-dialog-input-certificado' : DrtDialogInputCertificado
     },
     created() {
         this.service = new CertificadoService(this.$http);
@@ -67,6 +79,7 @@ export default {
             certificado : {},
             certificados : [],
             filtroEscolhido : '',
+            exibeDialogInputCertificado : false,
             loadingForm : false,
             loadingTable : false,
             opcoesFiltro : [
@@ -163,6 +176,12 @@ export default {
                                     this.abrirPopUpErro(err, 'Tivemos um problema ao tentar excluir o certificado.')
                                 })
             }).catch(() => {});
+        },
+        exibirDialogInputCertificao() {
+            this.exibeDialogInputCertificado = true;
+        },
+        fecharDialogInputCertificado() {
+            this.exibeDialogInputCertificado = false;
         },
         handlePreview(file) {
             console.log("teste");
