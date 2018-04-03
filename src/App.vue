@@ -8,6 +8,7 @@
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-document"></i>Cadastros</template>
             <el-menu-item index="/certificadoDigital">Certificado Digital</el-menu-item>
+            <el-menu-item index="/cfop">CFOP</el-menu-item>
             <el-menu-item index="/cidade">Cidade</el-menu-item>
             <el-menu-item index="/empresa">Empresa</el-menu-item>
             <el-menu-item index="/pessoa">Pessoa</el-menu-item>
