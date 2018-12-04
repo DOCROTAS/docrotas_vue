@@ -4,11 +4,13 @@
 
     <div class="desktop">
         <div id="formulario" v-show="modoFormulario" v-loading.body="loadingForm" element-loading-text="Carregando...">
-            <el-row>
+            <el-row class="barra">
                 <drt-button-modo-grade v-on:click="ativarModoGrade()"></drt-button-modo-grade>
                 <drt-button-novo v-on:click="novo()"></drt-button-novo>
+                <drt-button-salvar v-on:click="salvar"></drt-button-salvar>
+                <drt-button-excluir v-on:click="excluir(empresa.id, empresa.razao)"></drt-button-excluir>
             </el-row>
-            <el-form ref="form" :model="empresa" label-width="180px">
+            <el-form ref="form" :model="empresa" label-width="180px" style=" margin-top: 10px">
                 <el-form-item label="ID">
                     <el-col :span="4">
                         <el-input v-model="empresa.id" disabled></el-input>
@@ -82,8 +84,6 @@
                     </el-col>
                 </el-form-item>
             </el-form>
-            <drt-button-salvar v-on:click="salvar"></drt-button-salvar>
-            <drt-button-excluir v-on:click="excluir(empresa.id, empresa.razao)"></drt-button-excluir>
             <drt-dialog-pesquisa-cidade :exibe.sync="exibeDialogPesqCidade" v-on:cidadeSelecionada="alterarCidade" v-on:fecharDialogCidade="fecharDialogCidade"></drt-dialog-pesquisa-cidade>
         </div>
         <div v-show="!modoFormulario" v-loading.body="loadingTable" element-loading-text="Carregando...">

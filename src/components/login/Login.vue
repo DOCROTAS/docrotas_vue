@@ -9,10 +9,9 @@
                         <el-button type="info" icon="plus" v-on:click="novo()">Novo</el-button>
                         <el-button type="danger" icon="delete" v-on:click="excluir(cte.id, cte.numero)">Excluir</el-button>
                         <el-button type="success" icon="check" v-on:click="salvar()">Salvar</el-button>
-                        <el-button style="background-color: orange; color: white" icon="upload2" v-on:click="transmitir(cte.id)">Transmitir</el-button>
-                        <el-button type="danger" icon="close">Cancelar</el-button>
-                        <el-button style="background-color: #6600cc; color: white" icon="document">Imprimir DACTE</el-button>
-                        <el-button style="background-color: #0000ff; color: white" type="success" icon="message" v-on:click="enviarEmail(cte.id)">Enviar E-mail</el-button>
+                        <el-button style="background-color: orange; color: white" icon="upload2" v-on:click="novo()">Transmitir</el-button>
+                        <el-button style="background-color: #6600cc; color: white" icon="document" v-on:click="novo()">Imprimir DACTE</el-button>
+                        <el-button style="background-color: #0000ff; color: white" type="success" icon="message" v-on:click="novo()">Enviar por E-mail</el-button>
                 </el-row>
                 <el-form ref="form" :inline="true" :model="cte" label-width="80px" class="form" label-position="left">
                     <el-form-item label="ID">
@@ -59,22 +58,27 @@
                 <el-form :inline="true" label-width="140px" label-position="left" class="form">
                     <el-form-item label="Valor Frete">
                         <el-col >
-                            <el-input-number v-model="cte.vlrFrete" @change="changeVlrFrete"></el-input-number>
+                            <el-input v-model="cte.vlrFrete"></el-input>
+                         </el-col>
+                    </el-form-item>
+                    <el-form-item label="Valor Mercadoria">
+                        <el-col >
+                            <el-input v-model="cte.vlrMercadoria"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Base do ICMS">
                         <el-col >
-                            <el-input-number v-model="cte.baseCalculo" @change="changeBaseCalculo"></el-input-number>
+                            <el-input v-model="cte.baseCalculo"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Alíquota de ICMS">
                         <el-col >
-                            <el-input-number v-model="cte.aliquota" @change="changeAliquota"></el-input-number>
+                            <el-input v-model="cte.aliquota"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Valor de ICMS">
                         <el-col >
-                            <el-input-number v-model="cte.vlrIcms"></el-input-number>
+                            <el-input v-model="cte.vlrIcms"></el-input>
                          </el-col>
                     </el-form-item>
                 </el-form>
@@ -82,7 +86,7 @@
                 <el-form :inline="true" label-width="120px" label-position="left" class="form">
                     <el-form-item label="Valor Mercadoria">
                         <el-col >
-                            <el-input-number v-model="cte.vlrMercadoria"></el-input-number>
+                            <el-input v-model="cte.vlrMercadoria"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Produto">
@@ -100,12 +104,12 @@
                 <el-form :inline="false" label-width="160px" label-position="left" class="form">
                     <el-form-item label="Chave de Acesso">
                         <el-col :span="10">
-                            <el-input v-model="cte.chaveAcesso" disabled></el-input>
+                            <el-input v-model="cte.chaveAcesso" disabled="true"></el-input>
                             </el-col>
                     </el-form-item>
                     <el-form-item label="Protoloco Lote">
                         <el-col :span="8">
-                            <el-input v-model="cte.protocoloLote" disabled></el-input>
+                            <el-input v-model="cte.protocoloLote" disabled="true"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Data Protocolo Lote">
@@ -115,7 +119,7 @@
                     </el-form-item>
                     <el-form-item label="Protoloco Autorização">
                         <el-col :span="8">
-                            <el-input v-model="cte.protocoloAutorizacao" disabled></el-input>
+                            <el-input v-model="cte.protocoloAutorizacao" disabled="true"></el-input>
                          </el-col>
                     </el-form-item>
                     <el-form-item label="Data Protocolo Autorização">
@@ -155,8 +159,8 @@
                 </el-form>
                 <el-table :data="ctes" border style="width: 100%">
                     <el-table-column prop="id" label="ID" width="60"></el-table-column>
-                    <el-table-column prop="serie" label="Série"></el-table-column>
                     <el-table-column prop="numero" label="Número"></el-table-column>
+                    <el-table-column prop="numero" label="Série"></el-table-column>
                     <el-table-column prop="empresa.fantasia" label="Empresa"></el-table-column>
                     <el-table-column width="150">
                         <template scope="scope">
@@ -374,76 +378,7 @@ export default {
                     confirmButtonText: 'OK',
                     type: 'error'
             });
-        },
-        transmitir(id) {
-            this.$confirm('Deseja realmente transmitir este CT-e ?', 'Atenção', {
-                confirmButtonText: 'Sim',
-                cancelButtonText: 'Não',
-                type: 'warning'
-                }).then(() => {
-                    this.loadingForm = true;
-
-                    this.service
-                            .transmitir(id)
-                                .then(function (cte) {
-                                    this.cte = cte;
-
-                                    this.loadingForm = false;
-
-                                    this.$message({
-                                        type: 'success',
-                                        message: 'CT-e aprovado com sucesso'
-                                    });
-                                }, function(err) {
-                                    this.loadingForm = false;
-                                    this.abrirPopUpErro(err, 'Tivemos um problema ao tentar transmitir o CT-e.')
-                                });
-
-                    
-                }).catch(() => {});
-        },
-        enviarEmail(id) {
-            this.$confirm('Deseja realmente enviar deste CT-e ?', 'Atenção', {
-                confirmButtonText: 'Sim',
-                cancelButtonText: 'Não',
-                type: 'warning'
-                }).then(() => {
-                    this.loadingForm = true;
-
-                    this.service
-                            .enviarEmail(id)
-                                .then(function () {
-                                    this.loadingForm = false;
-
-                                    this.$message({
-                                        type: 'success',
-                                        message: 'E-mail enviado com sucesso'
-                                    });
-                                }, function(err) {
-                                    this.loadingForm = false;
-                                    this.abrirPopUpErro(err, 'Tivemos um problema ao tentar enviar e-mail deste CT-e.')
-                                });
-
-                    
-                }).catch(() => {});
-        },
-        changeVlrFrete(newValue) {
-            this.cte.baseCalculo = newValue;
-
-            if (this.cte.aliquota > 0) {
-                this.cte.vlrIcms = this.cte.baseCalculo * this.cte.aliquota / 100;
-            }
-        },
-        changeBaseCalculo(newValue) {
-            if (this.cte.aliquota > 0) {
-                this.cte.vlrIcms = newValue * this.cte.aliquota / 100;
-            }
-        },
-        changeAliquota(newValue) {
-            if (newValue > 0) {
-                this.cte.vlrIcms = this.cte.baseCalculo * newValue / 100;
-            }
-        }  
+        } 
   }, watch: {
       'qtdRegistros' : function (val, oldVal) {
           this.paginaAtual = 1;
@@ -472,6 +407,10 @@ export default {
     .form {
         margin-top:10px; 
         margin-left:10px
+    }
+    .barra {
+        background : #E5E9F2;
+        border-radius: 10px;
     }
     .btn-grade {
         background : #8492A6;
