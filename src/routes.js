@@ -10,6 +10,7 @@ import Configuracoes from './components/configuracoes/Configuracoes.vue';
 import Cte from './components/cte/Cte.vue';
 import Mdfe from './components/mdfe/Mdfe.vue';
 import Cfop from './components/cfop/Cfop.vue';
+import Login from './components/login/Login.vue';
 
 export const routes = [
     { path: '', name: 'home', component: Home},
@@ -25,5 +26,6 @@ export const routes = [
     { path: '/cte', name: 'cte', component: Cte},
     { path: '/mdfe', name: 'mdfe', component: Mdfe},
     { path: '/cfop', name: 'cfop', component: Cfop},
+    { path: '/login', name: 'login', component: Login},
     { path: '*', name: 'home', component: Home}
 ]

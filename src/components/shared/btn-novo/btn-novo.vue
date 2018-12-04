@@ -1,5 +1,5 @@
 <template>
-    <el-button type="success" icon="document" @click="handleClick">Novo</el-button>
+    <el-button type="success" icon="plus" @click="handleClick">Novo</el-button>
 </template>
 <script>
     export default {

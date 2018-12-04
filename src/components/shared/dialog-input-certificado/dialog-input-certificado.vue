@@ -13,7 +13,7 @@
                 <el-form ref="form" label-width="180px">
                     <el-form-item label="Senha">
                         <el-col :span="4">
-                            <el-input v-model="data.senha"></el-input>
+                            <el-input type="password" v-model="data.senha"></el-input>
                         </el-col>
                     </el-form-item>
                 </el-form>

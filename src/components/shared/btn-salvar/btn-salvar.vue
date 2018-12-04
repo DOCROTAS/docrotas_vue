@@ -1,5 +1,5 @@
 <template>
-    <el-button type="success" icon="check" @click="handleClick">Salvar</el-button>
+    <el-button icon="check" @click="handleClick" class="bntSalvar">Salvar</el-button>
 </template>
 <script>
     export default {
@@ -16,5 +16,10 @@
     }
 </script>
 <style>
-
+    .bntSalvar {
+        background: orange;
+        color: white;
+        margin-left : 10px;
+        margin-right : 10px
+    }
 </style>
